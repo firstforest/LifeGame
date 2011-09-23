@@ -9,7 +9,7 @@ public class Creature {
 	private int x;
 	private int y;
 	// life
-	private int life;
+	private int life=10;
 	private static final int LIFE_MAX = 20;
 	private static final int SIZE = 1;
 	private Direction direction = new Direction(1, 1);
