@@ -28,7 +28,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		return cPool;
 	}
 
-	// ダブルバッファリング用
+	// 繝�ヶ繝ｫ繝舌ャ繝輔ぃ繝ｪ繝ｳ繧ｰ逕ｨ
     private Image dbImage = null;
     private Graphics dbg;
 
@@ -52,7 +52,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		map = new Map(WIDTH, HEIGHT);
 		cPool = new CreaturePool(WIDTH, HEIGHT);
 
-		// MouseListenerを登録
+		// MouseListener繧堤匳骭ｲ
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
@@ -81,7 +81,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	}
 
 	private synchronized void gameRender() {
-		// ダブルバッファリング用オブジェクトの生成
+		// 繝�ヶ繝ｫ繝舌ャ繝輔ぃ繝ｪ繝ｳ繧ｰ逕ｨ繧ｪ繝悶ず繧ｧ繧ｯ繝医�逕滓�
 		if (dbImage == null) {
 			dbImage = createImage(WIDTH, HEIGHT);
 			if (dbImage == null) {
@@ -92,10 +92,11 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			}
 		}
 
-		// バッファをクリアする
+		// 繝舌ャ繝輔ぃ繧偵け繝ｪ繧｢縺吶ｋ
 		dbg.setColor(Color.WHITE);
 		dbg.fillRect(0, 0, WIDTH, HEIGHT);
 
+		map.draw(dbg);
 		cPool.draw(dbg);
 		if (mDragged) {
 			dbg.setColor(Color.RED);
@@ -107,7 +108,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	}
 
 	/**
-	 * バッファの内容を画面に描画
+	 * 繝舌ャ繝輔ぃ縺ｮ蜀�ｮｹ繧堤判髱｢縺ｫ謠冗判
 	 */
 	private synchronized void paintScreen() {
 		Graphics g;
@@ -196,13 +197,13 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
 
@@ -215,7 +216,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
 }
