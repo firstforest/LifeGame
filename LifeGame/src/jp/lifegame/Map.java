@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public class Map {
 	private int width;
 	private int height;
-
+	private int timer=0;
 
 	private MapChip[] maps;
 
@@ -40,9 +40,21 @@ public class Map {
 		}
 	}
 
+	public void genEne() {
+		if (timer % 10 == 0) {
+			for (MapChip m : maps) {
+				m.genEne();
+			}
+			timer = 0;
+		}
+		timer++;
+	}
 	public int redEne(int x, int y, int ene) {
-		MapChip map = maps[x + y * width];
-		return map.redEne(ene);
+		if (0<=x && x<width && 0<=y && y<height) {
+			MapChip map = maps[x + y * width];
+			return map.redEne(ene);
+		}
+		return 0;
 	}
 
 
@@ -54,6 +66,10 @@ public class Map {
 			energy = 10;
 			this.x = x;
 			this.y = y;
+		}
+		
+		public void genEne() {
+			if (energy < 10) energy++;
 		}
 		
 		public int redEne(int x) {

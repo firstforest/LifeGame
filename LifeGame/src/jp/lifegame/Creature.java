@@ -13,7 +13,7 @@ public class Creature {
 	private static final int LIFE_MAX = 20;
 	private static final int SIZE = 1;
 	private Direction direction = new Direction(1, 1);
-	private int appetite = 1;
+	private int appetite = 2;
 	GameMain gameMain;
 	Map map;
 	private int timer=0;
@@ -97,7 +97,11 @@ public class Creature {
 	}
 
 	public void eat() {
-		life += gameMain.getMap().redEne(x+direction.x, y+direction.y, appetite);
+		int dx = x+direction.x;
+		int dy = y+direction.y;
+		life += gameMain.getMap().redEne(dx, dy, appetite);
+		life --;
+		if (life <= 0) death();
 	}
 
 	public void breed() {

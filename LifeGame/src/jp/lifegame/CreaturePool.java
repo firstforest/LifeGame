@@ -7,55 +7,65 @@ import java.util.Iterator;
 public class CreaturePool {
 
 	private class CreatureBacket {
-		public ArrayList<Creature> cs;
+		public Creature[] cs;
 		private static final int C_MAX = 4;
 
 		public CreatureBacket() {
-			cs = new ArrayList<Creature>();
+			cs = new Creature[C_MAX];
+			for (int i=0; i<C_MAX; i++) {
+				cs[i] = null;
+			}
 		}
 
 		public void add(Creature c) {
-			if (cs.size() < C_MAX) cs.add(c);
-		}
-
-		public void remove(Creature c) {
-			cs.remove(c);
+			for (int i=0; i<cs.length; i++) {
+				if (cs[i] != null) continue;
+				cs[i] = c;
+				break;
+			}
 		}
 
 		public void move() {
 			for (Creature c : cs) {
-				c.move();
+				if (c != null) c.move();
 			}
 		}
 
 		public void draw(Graphics g) {
 			for (Creature c : cs) {
-				c.draw(g);
+				if (c != null) c.draw(g);
 			}
 		}
 
 		public void death(Creature c) {
-			cs.remove(c);
+			for (int i=0; i<cs.length; i++) {
+				if (cs[i] == c) cs[i] = null;
+			}			
 		}
 
 		public void eat() {
-			for (Creature c : cs) {
-				c.eat();
+			for (int i=0; i<cs.length; i++) {
+				if (cs[i] != null) cs[i].eat();
 			}
 		}
 		public void breed() {
-			int csSize = cs.size();
-			for (int i=0; i<csSize; i++) {
-				cs.get(i).breed();
+			for (int i=0; i<cs.length; i++) {
+				if (cs[i] != null) cs[i].breed();
 			}
 		}
 		public Creature getCreature() {
-			if (cs.size() > 0) return cs.get(0);
+			for (int i=0; i<cs.length; i++) {
+				if (cs[i] != null) return cs[i];
+			}
 			return null;
 		}
 
 		public boolean exist() {
-			return (cs.size() > 0);
+			boolean result=false;
+			for (int i=0; i<cs.length; i++) {
+				if (cs[i] != null) result = true;
+			}
+			return result;
 		}
 	}
 
@@ -123,7 +133,7 @@ public class CreaturePool {
 		}
 		for (CreatureBacket cb : tmp) {
 			for (Creature c : cb.cs) {
-				creatures[c.getX() + c.getY()*width].add(c);
+				if (c != null) creatures[c.getX() + c.getY()*width].add(c);
 			}
 		}
 	}

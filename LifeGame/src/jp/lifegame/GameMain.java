@@ -78,6 +78,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		cPool.move();
 		cPool.eat();
 		cPool.breed();
+		map.genEne();
 	}
 
 	private synchronized void gameRender() {
