@@ -7,6 +7,10 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
+import jp.lifegame.creature.Creature;
+import jp.lifegame.creature.CreaturePool;
+import jp.lifegame.creature.FirstCreature;
+
 public class GameMain extends JPanel implements Runnable, MouseListener, MouseMotionListener {
 	/**
 	 *
@@ -28,7 +32,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		return cPool;
 	}
 
-	// 繝�ヶ繝ｫ繝舌ャ繝輔ぃ繝ｪ繝ｳ繧ｰ逕ｨ
+	// リアルタイムレンダリング用
     private Image dbImage = null;
     private Graphics dbg;
 
@@ -135,7 +139,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			x = e.getX();
 			y = e.getY();
 
-			cPool.add(new Creature(this, x, y));
+			cPool.add(new FirstCreature(this, x, y));
 			break;
 		case MouseEvent.BUTTON3:
 			Creature c;
@@ -179,7 +183,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			for (int j = preSelY; j < selY; j++) {
 				switch (e.getButton()) {
 				case MouseEvent.BUTTON1:
-					cPool.add(new Creature(this, i, j));
+					cPool.add(new FirstCreature(this, i, j));
 					break;
 				case MouseEvent.BUTTON3:
 					Creature c;

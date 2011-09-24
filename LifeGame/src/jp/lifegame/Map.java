@@ -41,7 +41,7 @@ public class Map {
 	}
 
 	public void genEne() {
-		if (timer % 10 == 0) {
+		if (timer % 1 == 0) {
 			for (MapChip m : maps) {
 				m.genEne();
 			}

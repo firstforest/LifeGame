@@ -1,8 +1,6 @@
-package jp.lifegame;
+package jp.lifegame.creature;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class CreaturePool {
 
@@ -122,7 +120,10 @@ public class CreaturePool {
 	}
 
 	public Creature getCreatureAtMap(int x, int y) {
-		return creatures[x+y*width].getCreature();
+		if (0<=x && x<width && 0<=y && y<height) {
+			return creatures[x+y*width].getCreature();
+		}
+		return null;
 	}
 
 	private void update() { // 移動後の更新

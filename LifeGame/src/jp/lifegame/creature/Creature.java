@@ -1,24 +1,28 @@
-package jp.lifegame;
+package jp.lifegame.creature;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+import jp.lifegame.GameMain;
+
 public class Creature {
 	// position
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
 	// life
-	private int life=10;
-	private static final int LIFE_MAX = 20;
+	protected int life = 10;
+	protected static int LIFE_MAX = 20;
 	private static final int SIZE = 1;
-	private Direction direction = new Direction(1, 1);
-	private int appetite = 2;
-	GameMain gameMain;
-	Map map;
+	protected Direction direction = new Direction(1, 1);
+	protected int appetite = 2;
+
+	protected Color color;
+	protected GameMain gameMain;
 	private int timer=0;
+	
 	// randamizer
-	private Random rnd = new Random();
+	protected Random rnd = new Random();
 
 	public int getX() {
 		return x;
@@ -32,9 +36,10 @@ public class Creature {
 	public Creature(GameMain gameMain, int x, int y) {
 		this.x = x;
 		this.y = y;
-
+		color = Color.BLACK;
+		
 		this.gameMain = gameMain;
-		this.map = gameMain.getMap();
+		gameMain.getMap();
 	}
 
 	private void selectNewDirection() {
@@ -88,12 +93,13 @@ public class Creature {
 	}
 
 	public void draw(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(color);
 		g.drawRect(x, y, SIZE, SIZE);
 	}
 
-	public void death() {
+	public int death() {
 		gameMain.getcPool().death(this);
+		return life;
 	}
 
 	public void eat() {
@@ -112,7 +118,7 @@ public class Creature {
 	}
 
 
-	private class Direction {
+	protected class Direction {
 		private int x;
 		private int y;
 
