@@ -35,10 +35,15 @@ public class CreaturePool {
 			}
 		}
 
-		public void death(Creature c) {
+		public int death(Creature c) {
+			int score=0;
 			for (int i=0; i<cs.length; i++) {
-				if (cs[i] == c) cs[i] = null;
-			}			
+				if (cs[i] == c) {
+					score += c.life;
+					cs[i] = null;
+				}
+			}
+			return score;
 		}
 
 		public void eat() {
@@ -100,11 +105,11 @@ public class CreaturePool {
 		}
 	}
 
-	public void death(Creature c) {
+	public int death(Creature c) {
 		int x,y;
 		x = c.getX();
 		y = c.getY();
-		creatures[x + y*width].death(c);
+		return creatures[x + y*width].death(c);
 	}
 
 	public void eat() {

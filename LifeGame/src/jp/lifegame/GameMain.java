@@ -16,7 +16,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	// panel sizent
+	// panel size
 	private static final int WIDTH = 240;
 	private static final int HEIGHT = 240;
 
@@ -26,6 +26,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
 	private Thread thread;
 	private CreaturePool cPool;
+	
+	private int score = 0;
 
 
     public CreaturePool getcPool() {
@@ -37,6 +39,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
     private Graphics dbg;
 
     private Map map;
+	private InfoPanel infoPane;
 
 	public  int getWidth() {
 		return WIDTH;
@@ -83,6 +86,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		cPool.eat();
 		cPool.breed();
 		map.genEne();
+		if (infoPane != null) infoPane.update();
 	}
 
 	private synchronized void gameRender() {
@@ -151,6 +155,14 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			break;
 		}
 	}
+	
+	public void setInfoPane(InfoPanel infoPane) {
+		this.infoPane = infoPane;
+	}
+	
+	public int getScore() {
+		return score;
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -188,7 +200,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				case MouseEvent.BUTTON3:
 					Creature c;
 					while ((c = cPool.getCreatureAtMap(i, j)) != null) {
-						cPool.death(c);
+						score += cPool.death(c);
 					}
 					break;
 				default:
@@ -196,7 +208,6 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				}
 			}
 		}
-
 		mDragged = false;
 	}
 
