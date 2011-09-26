@@ -7,22 +7,44 @@ import java.util.Random;
 import jp.lifegame.GameMain;
 
 public class Creature {
-	// position
+	// position, direction
 	protected int x;
 	protected int y;
-	// life
-	protected int life = 10;
-	protected static int LIFE_MAX = 20;
+	protected Direction direction;
+	
+	// status
+	protected int life;
+	protected static int LIFE_MAX;
 	private static final int SIZE = 1;
-	protected Direction direction = new Direction(1, 1);
-	protected int appetite = 2;
-
+	protected int appetite;
+	protected int mileage;
+	protected int value;
 	protected Color color;
+
 	protected GameMain gameMain;
 	private int timer=0;
-	
-	// randamizer
+	// Randomizer
 	protected Random rnd = new Random();
+
+	public Creature(GameMain gameMain, int x, int y) {
+		this.x = x;
+		this.y = y;
+
+		init();
+		
+		this.gameMain = gameMain;
+	}
+
+	private void init() {
+		// init
+		life = 10;
+		LIFE_MAX = 20;
+		appetite = 2;
+		mileage = 1;
+		value = 8;
+		color = Color.BLACK;
+		direction = new Direction(1,1);
+	}
 
 	public int getX() {
 		return x;
@@ -33,13 +55,9 @@ public class Creature {
 	}
 
 
-	public Creature(GameMain gameMain, int x, int y) {
-		this.x = x;
-		this.y = y;
-		color = Color.BLACK;
-		
-		this.gameMain = gameMain;
-		gameMain.getMap();
+	public void draw(Graphics g) {
+		g.setColor(color);
+		g.drawRect(x, y, SIZE, SIZE);
 	}
 
 	private void selectNewDirection() {
@@ -47,7 +65,7 @@ public class Creature {
 		for (int i=0; i<32; i++) {
 			vx = rnd.nextInt(3) - 1;
 			vy = rnd.nextInt(3) - 1;
-
+	
 			if (gameMain.getcPool().exsitCreature(x+vx, y+vy)) {
 				continue;
 			} else {
@@ -92,21 +110,11 @@ public class Creature {
 		timer++;
 	}
 
-	public void draw(Graphics g) {
-		g.setColor(color);
-		g.drawRect(x, y, SIZE, SIZE);
-	}
-
-	public int death() {
-		gameMain.getcPool().death(this);
-		return life;
-	}
-
 	public void eat() {
 		int dx = x+direction.x;
 		int dy = y+direction.y;
 		life += gameMain.getMap().redEne(dx, dy, appetite);
-		life --;
+		life -= mileage;
 		if (life <= 0) death();
 	}
 
@@ -117,6 +125,14 @@ public class Creature {
 		}
 	}
 
+	public int death() {
+		gameMain.getcPool().death(this);
+		return life;
+	}
+	
+	public int getValue() {
+		return value;
+	}
 
 	protected class Direction {
 		private int x;

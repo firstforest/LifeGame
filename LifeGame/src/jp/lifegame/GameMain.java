@@ -19,27 +19,49 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	// panel size
 	private static final int WIDTH = 240;
 	private static final int HEIGHT = 240;
-
 	// for mouse
-	private int preSelX, preSelY, selX, selY;
-	private boolean mDragged = false;
-
-	private Thread thread;
-	private CreaturePool cPool;
+	private MouseStat mouseStat;
 	
-	private int score = 0;
-
-
-    public CreaturePool getcPool() {
-		return cPool;
-	}
-
+	private CreaturePool cPool;
+	private Map map;
+	private InfoPanel infoPane;
 	// リアルタイムレンダリング用
     private Image dbImage = null;
     private Graphics dbg;
 
-    private Map map;
-	private InfoPanel infoPane;
+    private Thread thread;
+
+	private int score;
+
+	public GameMain() {
+		// set size
+		setPreferredSize(new Dimension(WIDTH, HEIGHT));
+	
+		map = new Map(WIDTH, HEIGHT);
+		cPool = new CreaturePool(WIDTH, HEIGHT);
+		mouseStat = new MouseStat();
+		score = 0;
+		// MouseListener
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	
+		thread = new Thread(this);
+		thread.start();
+	}
+
+	public void run() {
+		while (true) {
+			gameUpdate();
+			gameRender();
+			paintScreen();
+	
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public  int getWidth() {
 		return WIDTH;
@@ -53,32 +75,16 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		return map;
 	}
 
-	public GameMain() {
-		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
-		map = new Map(WIDTH, HEIGHT);
-		cPool = new CreaturePool(WIDTH, HEIGHT);
-
-		// MouseListener繧堤匳骭ｲ
-		addMouseListener(this);
-		addMouseMotionListener(this);
-
-		thread = new Thread(this);
-		thread.start();
+	public CreaturePool getcPool() {
+		return cPool;
 	}
 
-	public void run() {
-		while (true) {
-			gameUpdate();
-			gameRender();
-			paintScreen();
+	public void setInfoPane(InfoPanel infoPane) {
+		this.infoPane = infoPane;
+	}
 
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+	public int getScore() {
+		return score;
 	}
 
 	private synchronized void gameUpdate() {
@@ -90,7 +96,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	}
 
 	private synchronized void gameRender() {
-		// 繝�ヶ繝ｫ繝舌ャ繝輔ぃ繝ｪ繝ｳ繧ｰ逕ｨ繧ｪ繝悶ず繧ｧ繧ｯ繝医�逕滓�
+		// dual buffer
 		if (dbImage == null) {
 			dbImage = createImage(WIDTH, HEIGHT);
 			if (dbImage == null) {
@@ -101,18 +107,18 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			}
 		}
 
-		// 繝舌ャ繝輔ぃ繧偵け繝ｪ繧｢縺吶ｋ
+		// clear
 		dbg.setColor(Color.WHITE);
 		dbg.fillRect(0, 0, WIDTH, HEIGHT);
 
 		map.draw(dbg);
 		cPool.draw(dbg);
-		if (mDragged) {
+		if (mouseStat.dragged) {
 			dbg.setColor(Color.RED);
-			dbg.drawLine(preSelX, preSelY, selX, preSelY);
-			dbg.drawLine(selX, preSelY, selX, selY);
-			dbg.drawLine(selX, selY, preSelX, selY);
-			dbg.drawLine(preSelX, selY, preSelX, preSelY);
+			dbg.drawLine(mouseStat.px, mouseStat.py, mouseStat.x, mouseStat.py);
+			dbg.drawLine(mouseStat.x, mouseStat.py, mouseStat.x, mouseStat.y);
+			dbg.drawLine(mouseStat.x, mouseStat.y, mouseStat.px, mouseStat.y);
+			dbg.drawLine(mouseStat.px, mouseStat.y, mouseStat.px, mouseStat.py);
 		}
 	}
 
@@ -156,43 +162,35 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		}
 	}
 	
-	public void setInfoPane(InfoPanel infoPane) {
-		this.infoPane = infoPane;
-	}
-	
-	public int getScore() {
-		return score;
-	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {
-		preSelX = e.getX();
-		preSelY = e.getY();
+		mouseStat.px = e.getX();
+		mouseStat.py = e.getY();
 	}
 
 	@Override
 	public synchronized void mouseReleased(MouseEvent e) {
-		if (preSelX < e.getX()) {
-			selX = e.getX();
+		if (mouseStat.px < e.getX()) {
+			mouseStat.x = e.getX();
 		} else {
-			selX = preSelX;
-			preSelX = e.getX();
+			mouseStat.x = mouseStat.px;
+			mouseStat.px = e.getX();
 		}
 
-		if (preSelY < e.getY()) {
-			selY = e.getY();
+		if (mouseStat.py < e.getY()) {
+			mouseStat.y = e.getY();
 		} else {
-			selY = preSelY;
-			preSelY = e.getY();
+			mouseStat.y = mouseStat.py;
+			mouseStat.py = e.getY();
 		}
 
-		preSelX = (preSelX<0) ? 0 : preSelX;
-		selX = (selX>WIDTH) ? WIDTH : selX;
-		preSelY = (preSelY<0) ? 0 : preSelY;
-		selY = (selY>HEIGHT) ? HEIGHT : selY;
+		mouseStat.px = (mouseStat.px<0) ? 0 : mouseStat.px;
+		mouseStat.x = (mouseStat.x>WIDTH) ? WIDTH : mouseStat.x;
+		mouseStat.py = (mouseStat.py<0) ? 0 : mouseStat.py;
+		mouseStat.y = (mouseStat.y>HEIGHT) ? HEIGHT : mouseStat.y;
 
-		for (int i = preSelX; i < selX; i++) {
-			for (int j = preSelY; j < selY; j++) {
+		for (int i = mouseStat.px; i < mouseStat.x; i++) {
+			for (int j = mouseStat.py; j < mouseStat.y; j++) {
 				switch (e.getButton()) {
 				case MouseEvent.BUTTON1:
 					cPool.add(new FirstCreature(this, i, j));
@@ -200,7 +198,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				case MouseEvent.BUTTON3:
 					Creature c;
 					while ((c = cPool.getCreatureAtMap(i, j)) != null) {
-						score += cPool.death(c);
+						score += c.getValue();
+						cPool.death(c);
 					}
 					break;
 				default:
@@ -208,7 +207,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				}
 			}
 		}
-		mDragged = false;
+		mouseStat.dragged = false;
 	}
 
 	@Override
@@ -225,9 +224,9 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		selX = e.getX();
-		selY = e.getY();
-		mDragged = true;
+		mouseStat.x = e.getX();
+		mouseStat.y = e.getY();
+		mouseStat.dragged = true;
 	}
 
 	@Override
@@ -235,4 +234,15 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
+	
+	class MouseStat {
+		int px,py;
+		int x,y;
+		boolean dragged;
+		
+		public MouseStat() {
+			dragged = false;
+		}
+	}
 }
+

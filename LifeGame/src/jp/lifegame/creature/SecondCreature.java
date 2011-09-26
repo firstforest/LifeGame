@@ -9,7 +9,7 @@ public class SecondCreature extends Creature {
 	public SecondCreature(GameMain gameMain, int x, int y) {
 		super(gameMain, x, y);
 		LIFE_MAX = 40;
-		color = Color.RED;
+		color = Color.GREEN;
 	}
 	
 	@Override
@@ -20,15 +20,18 @@ public class SecondCreature extends Creature {
 		
 		Creature c = gameMain.getcPool().getCreatureAtMap(dx, dy);
 		if (c != null) life += c.death();
-		life--;
+		life -= mileage;
 		if (life <= 0) death();
 	}
 	
 	@Override
 	public void breed() {
 		if (life > LIFE_MAX) {
-			gameMain.getcPool().add(new SecondCreature(gameMain, x, y));
-			life /= 2;
+			if (rnd.nextDouble() < 0.001) {
+				gameMain.getcPool().add(new ThirdCreature(gameMain, x, y));
+			} else {
+				gameMain.getcPool().add(new SecondCreature(gameMain, x, y));
+			}life /= 2;
 		}
 	}
 }
