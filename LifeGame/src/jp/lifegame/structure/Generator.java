@@ -12,7 +12,7 @@ public class Generator extends Structure{
 		super(gameMain, x, y);
 		this.color = Color.ORANGE;
 
-		amount = 100;
+		amount = 1000;
 	}
 
 	public void genEne() {
