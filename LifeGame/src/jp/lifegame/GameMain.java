@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import jp.lifegame.creature.Creature;
 import jp.lifegame.creature.CreaturePool;
 import jp.lifegame.creature.FirstCreature;
+import jp.lifegame.structure.Generator;
+import jp.lifegame.structure.StructurePool;
 
 public class GameMain extends JPanel implements Runnable, MouseListener, MouseMotionListener {
 	/**
@@ -23,6 +25,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	private MouseStat mouseStat;
 
 	private CreaturePool cPool;
+	private StructurePool sPool;
 	private Map map;
 	private InfoPanel infoPane;
 	// リアルタイムレンダリング用
@@ -39,8 +42,11 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
 		map = new Map(WIDTH, HEIGHT);
 		cPool = new CreaturePool(WIDTH, HEIGHT);
+		sPool = new StructurePool(WIDTH, HEIGHT);
 		mouseStat = new MouseStat();
 		score = 100;
+		sPool.add(new Generator(this, 100, 100));
+
 		// MouseListener
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -79,6 +85,10 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		return cPool;
 	}
 
+	public StructurePool getsPool() {
+		return sPool;
+	}
+
 	public void setInfoPane(InfoPanel infoPane) {
 		this.infoPane = infoPane;
 	}
@@ -91,6 +101,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		cPool.move();
 		cPool.eat();
 		cPool.breed();
+		sPool.work();
 		map.genEne();
 		if (infoPane != null) infoPane.update();
 	}
@@ -113,6 +124,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
 		map.draw(dbg);
 		cPool.draw(dbg);
+		sPool.draw(dbg);
+
 		if (mouseStat.dragged) {
 			dbg.setColor(Color.RED);
 			dbg.drawLine(mouseStat.px, mouseStat.py, mouseStat.x, mouseStat.py);

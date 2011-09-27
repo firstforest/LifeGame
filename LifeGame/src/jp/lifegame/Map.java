@@ -21,7 +21,7 @@ public class Map {
 		maps = new MapChip[width*height];
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
-				maps[i + j * width] = new MapChip(i, j);	
+				maps[i + j * width] = new MapChip(i, j);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class Map {
 	public int getHeight() {
 		return height;
 	}
-	
+
 	public void draw(Graphics g) {
 		for (MapChip m : maps) {
 			m.draw(g);
@@ -41,7 +41,7 @@ public class Map {
 	}
 
 	public void genEne() {
-		if (timer % 5 == 0) {
+		if (timer % 1 == 0) {
 			for (MapChip m : maps) {
 				m.genEne();
 			}
@@ -57,21 +57,44 @@ public class Map {
 		return 0;
 	}
 
+	public void setEne(int x, int y, int ene) {
+		if (0<=x && x<width && 0<=y && y<height) {
+			MapChip map = maps[x + y * width];
+			map.setEne(ene);
+		}
+	}
+
 
 	private class MapChip {
 		private int energy;
 		private int x,y;
-		
+
 		public MapChip(int x, int y) {
-			energy = 10;
+			energy = 0;
 			this.x = x;
 			this.y = y;
 		}
-		
+
 		public void genEne() {
-			if (energy < 10) energy++;
+			int ene=0;
+			int tx, ty;
+
+			for (int i=-1; i<2; i++) {
+				for (int j=-1; j<2; j++) {
+					if (i==0 && j==0) continue;
+					tx = x + i;
+					ty = y + j;
+					if (0<=tx && tx<width && 0<=ty && ty<height) {
+						MapChip map = maps[tx + ty * width];
+						ene += map.getEne();
+					}
+				}
+			}
+
+			ene /= 8;
+			this.energy = (energy < ene) ? ene : energy;
 		}
-		
+
 		public int redEne(int x) {
 			if (x <= energy) {
 				energy -= x;
@@ -82,7 +105,15 @@ public class Map {
 				return t;
 			}
 		}
-		
+
+		public int getEne() {
+			return energy;
+		}
+
+		public void setEne(int ene) {
+			this.energy = ene;
+		}
+
 		public void draw(Graphics g) {
 			if (energy > 8) {
 				g.setColor(new Color(255,255,128));
