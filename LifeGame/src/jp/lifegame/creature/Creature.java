@@ -11,7 +11,7 @@ public class Creature {
 	protected int x;
 	protected int y;
 	protected Direction direction;
-	
+
 	// status
 	protected int life;
 	protected static int LIFE_MAX;
@@ -26,18 +26,17 @@ public class Creature {
 	// Randomizer
 	protected Random rnd = new Random();
 
-	public Creature(GameMain gameMain, int x, int y) {
+	public Creature(GameMain gameMain, int life, int x, int y) {
 		this.x = x;
 		this.y = y;
-
+		this.life = life;
 		init();
-		
+
 		this.gameMain = gameMain;
 	}
 
 	private void init() {
 		// init
-		life = 10;
 		LIFE_MAX = 20;
 		appetite = 2;
 		mileage = 1;
@@ -65,7 +64,7 @@ public class Creature {
 		for (int i=0; i<32; i++) {
 			vx = rnd.nextInt(3) - 1;
 			vy = rnd.nextInt(3) - 1;
-	
+
 			if (gameMain.getcPool().exsitCreature(x+vx, y+vy)) {
 				continue;
 			} else {
@@ -120,7 +119,7 @@ public class Creature {
 
 	public void breed() {
 		if (life > LIFE_MAX) {
-			gameMain.getcPool().add(new Creature(gameMain, x, y));
+			gameMain.getcPool().add(new Creature(gameMain, life/2, x, y));
 			life /= 2;
 		}
 	}
@@ -129,7 +128,7 @@ public class Creature {
 		gameMain.getcPool().death(this);
 		return life;
 	}
-	
+
 	public int getValue() {
 		return value;
 	}

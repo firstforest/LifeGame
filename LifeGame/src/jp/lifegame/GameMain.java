@@ -21,7 +21,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	private static final int HEIGHT = 240;
 	// for mouse
 	private MouseStat mouseStat;
-	
+
 	private CreaturePool cPool;
 	private Map map;
 	private InfoPanel infoPane;
@@ -36,15 +36,15 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	public GameMain() {
 		// set size
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-	
+
 		map = new Map(WIDTH, HEIGHT);
 		cPool = new CreaturePool(WIDTH, HEIGHT);
 		mouseStat = new MouseStat();
-		score = 0;
+		score = 100;
 		// MouseListener
 		addMouseListener(this);
 		addMouseMotionListener(this);
-	
+
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -54,7 +54,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			gameUpdate();
 			gameRender();
 			paintScreen();
-	
+
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
@@ -145,11 +145,14 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	public synchronized void mouseClicked(MouseEvent e) {
 		switch (e.getButton()) {
 		case MouseEvent.BUTTON1:
-			int x,y;
-			x = e.getX();
-			y = e.getY();
+			if (score >= 10) {
+				int x,y;
+				x = e.getX();
+				y = e.getY();
 
-			cPool.add(new FirstCreature(this, x, y));
+				cPool.add(new FirstCreature(this, 10, x, y));
+				score -= 10;
+			}
 			break;
 		case MouseEvent.BUTTON3:
 			Creature c;
@@ -161,7 +164,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			break;
 		}
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseStat.px = e.getX();
@@ -193,7 +196,10 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			for (int j = mouseStat.py; j < mouseStat.y; j++) {
 				switch (e.getButton()) {
 				case MouseEvent.BUTTON1:
-					cPool.add(new FirstCreature(this, i, j));
+					if (score >= 10) {
+						cPool.add(new FirstCreature(this, 10, i, j));
+						score -= 10;
+					}
 					break;
 				case MouseEvent.BUTTON3:
 					Creature c;
@@ -234,12 +240,12 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
-	
+
 	class MouseStat {
 		int px,py;
 		int x,y;
 		boolean dragged;
-		
+
 		public MouseStat() {
 			dragged = false;
 		}
