@@ -9,6 +9,7 @@ public class ThirdCreature extends Creature {
 	public ThirdCreature(GameMain gameMain, int life, int x, int y) {
 		super(gameMain, life, x, y);
 		LIFE_MAX = 100;
+		mileage = 5;
 		value = 80;
 		color = Color.RED;
 	}
