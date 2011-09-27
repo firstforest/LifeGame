@@ -19,8 +19,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	 */
 	private static final long serialVersionUID = 1L;
 	// panel size
-	private static final int WIDTH = 240;
-	private static final int HEIGHT = 240;
+	private static final int WIDTH = 480;
+	private static final int HEIGHT = 480;
 	// for mouse
 	private MouseStat mouseStat;
 
@@ -40,9 +40,9 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		// set size
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-		map = new Map(WIDTH, HEIGHT);
-		cPool = new CreaturePool(WIDTH, HEIGHT);
-		sPool = new StructurePool(WIDTH, HEIGHT);
+		map = new Map(WIDTH/2, HEIGHT/2);
+		cPool = new CreaturePool(WIDTH/2, HEIGHT/2);
+		sPool = new StructurePool(WIDTH/2, HEIGHT/2);
 		mouseStat = new MouseStat();
 		score = 100;
 		sPool.add(new Generator(this, 100, 100));
@@ -160,8 +160,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		case MouseEvent.BUTTON1:
 			if (score >= 10) {
 				int x,y;
-				x = e.getX();
-				y = e.getY();
+				x = e.getX()/2;
+				y = e.getY()/2;
 
 				cPool.add(new FirstCreature(this, 10, x, y));
 				score -= 10;
@@ -209,14 +209,14 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			for (int j = mouseStat.py; j < mouseStat.y; j++) {
 				switch (e.getButton()) {
 				case MouseEvent.BUTTON1:
-					if (score >= 10) {
-						cPool.add(new FirstCreature(this, 10, i, j));
+					if (score >= 10 && i%2==0 && j%2==0) {
+						cPool.add(new FirstCreature(this, 10, i/2, j/2));
 						score -= 10;
 					}
 					break;
 				case MouseEvent.BUTTON3:
 					Creature c;
-					while ((c = cPool.getCreatureAtMap(i, j)) != null) {
+					while ((c = cPool.getCreatureAtMap(i/2, j/2)) != null) {
 						score += c.getValue();
 						cPool.death(c);
 					}

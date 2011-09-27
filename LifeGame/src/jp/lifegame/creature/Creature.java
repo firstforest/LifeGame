@@ -15,7 +15,7 @@ public class Creature {
 	// status
 	protected int life;
 	protected static int LIFE_MAX;
-	private static final int SIZE = 1;
+	private static final int SIZE = 2;
 	protected int appetite;
 	protected int mileage;
 	protected int value;
@@ -41,7 +41,7 @@ public class Creature {
 		appetite = 2;
 		mileage = 1;
 		value = 8;
-		color = Color.BLACK;
+		color = Color.GREEN;
 		direction = new Direction(1,1);
 	}
 
@@ -56,7 +56,7 @@ public class Creature {
 
 	public void draw(Graphics g) {
 		g.setColor(color);
-		g.drawRect(x, y, SIZE, SIZE);
+		g.fillRect(x*SIZE, y*SIZE, SIZE, SIZE);
 	}
 
 	private void selectNewDirection() {

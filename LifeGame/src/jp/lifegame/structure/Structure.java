@@ -7,7 +7,7 @@ import jp.lifegame.GameMain;
 
 public class Structure {
 	protected int x,y;
-	protected static final int SIZE = 1;
+	protected static final int SIZE = 2;
 	protected Color color;
 	protected GameMain gameMain;
 
@@ -26,7 +26,7 @@ public class Structure {
 
 	public void draw(Graphics g) {
 		g.setColor(color);
-		g.drawRect(x, y, SIZE, SIZE);
+		g.drawRect(x*SIZE, y*SIZE, SIZE, SIZE);
 	}
 
 	public void destroy(Structure st) {

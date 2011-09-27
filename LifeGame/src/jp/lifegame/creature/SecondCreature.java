@@ -10,7 +10,7 @@ public class SecondCreature extends Creature {
 		super(gameMain, life, x, y);
 		LIFE_MAX = 40;
 		value = 32;
-		color = Color.GREEN;
+		color = Color.BLUE;
 	}
 
 	@Override

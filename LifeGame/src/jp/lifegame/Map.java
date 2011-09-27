@@ -115,16 +115,16 @@ public class Map {
 		}
 
 		public void draw(Graphics g) {
-			if (energy > 8) {
-				g.setColor(new Color(255,255,128));
-			} else if (energy > 3) {
-				g.setColor(new Color(255, 255, 200));
+			if (energy > 200) {
+				g.setColor(new Color(255,255,0));
+			} else if (energy > 100) {
+				g.setColor(new Color(255, 255, 128));
 			} else if (energy > 0) {
-				g.setColor(new Color(255, 255, 220));
+				g.setColor(new Color(255, 255, 200));
 			} else {
 				g.setColor(Color.WHITE);
 			}
-			g.drawRect(x, y, 1, 1);
+			g.drawRect(x*2, y*2, 2, 2);
 		}
 	}
 
