@@ -81,7 +81,7 @@ public class Map {
 
 			for (int i=-1; i<2; i++) {
 				for (int j=-1; j<2; j++) {
-					if (i==0 && j==0) continue;
+					if (i==0 && j==0 || (i != 0 && j != 0)) continue;
 					tx = x + i;
 					ty = y + j;
 					if (0<=tx && tx<width && 0<=ty && ty<height) {
@@ -91,7 +91,7 @@ public class Map {
 				}
 			}
 
-			ene /= 8;
+			ene /= 4;
 			this.energy = (energy < ene) ? ene : energy;
 		}
 
