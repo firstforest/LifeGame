@@ -158,13 +158,29 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	public synchronized void mouseClicked(MouseEvent e) {
 		switch (e.getButton()) {
 		case MouseEvent.BUTTON1:
-			if (score >= 10) {
-				int x,y;
-				x = e.getX()/2;
-				y = e.getY()/2;
+			switch (mouseStat.select) {
+				case CREATURE:
+					if (score >= 10) {
+						int x,y;
+						x = e.getX()/2;
+						y = e.getY()/2;
 
-				cPool.add(new FirstCreature(this, 10, x, y));
-				score -= 10;
+						cPool.add(new FirstCreature(this, 10, x, y));
+						score -= 10;
+					}
+					break; 	
+				case GENERATOR:
+					if (score >= 1000) {
+						int x,y;
+						x = e.getX()/2;
+						y = e.getY()/2;
+						
+						sPool.add(new Generator(this, x, y));
+						score -= 1000;
+					}
+					break;
+				default:
+					break;
 			}
 			break;
 		case MouseEvent.BUTTON3:
@@ -209,9 +225,17 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 			for (int j = mouseStat.py; j < mouseStat.y; j++) {
 				switch (e.getButton()) {
 				case MouseEvent.BUTTON1:
-					if (score >= 10 && i%2==0 && j%2==0) {
-						cPool.add(new FirstCreature(this, 10, i/2, j/2));
-						score -= 10;
+					switch (mouseStat.select) {
+					case CREATURE:
+						if (score >= 10 && i%2==0 && j%2==0) {
+							cPool.add(new FirstCreature(this, 10, i/2, j/2));
+							score -= 10;
+						}
+						break;
+					case GENERATOR:
+						break;
+					default:
+						break;
 					}
 					break;
 				case MouseEvent.BUTTON3:
@@ -253,15 +277,24 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
+	
+	public void setMouseStat (Select sel) {
+		mouseStat.select = sel;
+	}
 
-	class MouseStat {
+	private class MouseStat {
 		int px,py;
 		int x,y;
 		boolean dragged;
-
+		Select select;
+		
 		public MouseStat() {
 			dragged = false;
+			select = Select.CREATURE;
 		}
 	}
+	public static enum Select {CREATURE, GENERATOR};
 }
+
+
 

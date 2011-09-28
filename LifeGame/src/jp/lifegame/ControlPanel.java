@@ -6,25 +6,34 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import jp.lifegame.GameMain.Select;
+
 public class ControlPanel extends JPanel implements ActionListener{
 	private GameMain gameMain;
 	
-	private JButton test;
+	private JButton cButton;
+	private JButton genButton;
 	
 	public ControlPanel(GameMain gameMain) {
 		this.gameMain = gameMain;
 		
 		// button
-		test = new JButton("test");
+		cButton = new JButton("Creature");
+		genButton = new JButton("Generator");
 		
-		test.addActionListener(this);
+		cButton.addActionListener(this);
+		genButton.addActionListener(this);
 		
-		add(test);
+		add(cButton);
+		add(genButton);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO 自動生成されたメソッド・スタブ
-		
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == cButton) {
+			gameMain.setMouseStat(Select.CREATURE);
+		} else if (e.getSource() == genButton) {
+			gameMain.setMouseStat(Select.GENERATOR);
+		}
 	}
 }
