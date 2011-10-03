@@ -2,8 +2,6 @@ package jp.lifegame.structure;
 
 import java.awt.Graphics;
 
-import jp.lifegame.GameMain;
-
 public class StructurePool {
 
 	private Structure[] structures;

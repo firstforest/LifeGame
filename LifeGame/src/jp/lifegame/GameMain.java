@@ -21,6 +21,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 	// panel size
 	private static final int WIDTH = 480;
 	private static final int HEIGHT = 480;
+	private	static final int SIZE = 4;
 	// for mouse
 	private MouseStat mouseStat;
 
@@ -40,12 +41,12 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		// set size
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-		map = new Map(WIDTH/2, HEIGHT/2);
-		cPool = new CreaturePool(WIDTH/2, HEIGHT/2);
-		sPool = new StructurePool(WIDTH/2, HEIGHT/2);
+		map = new Map(WIDTH/SIZE, HEIGHT/SIZE);
+		cPool = new CreaturePool(WIDTH/SIZE, HEIGHT/SIZE);
+		sPool = new StructurePool(WIDTH/SIZE, HEIGHT/SIZE);
 		mouseStat = new MouseStat();
 		score = 100;
-		sPool.add(new Generator(this, 100, 100));
+		sPool.add(new Generator(this, 10, 10));
 
 		// MouseListener
 		addMouseListener(this);
@@ -162,8 +163,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				case CREATURE:
 					if (score >= 10) {
 						int x,y;
-						x = e.getX()/2;
-						y = e.getY()/2;
+						x = e.getX()/SIZE;
+						y = e.getY()/SIZE;
 
 						cPool.add(new FirstCreature(this, 10, x, y));
 						score -= 10;
@@ -172,8 +173,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				case GENERATOR:
 					if (score >= 1000) {
 						int x,y;
-						x = e.getX()/2;
-						y = e.getY()/2;
+						x = e.getX()/SIZE;
+						y = e.getY()/SIZE;
 						
 						sPool.add(new Generator(this, x, y));
 						score -= 1000;
@@ -227,8 +228,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 				case MouseEvent.BUTTON1:
 					switch (mouseStat.select) {
 					case CREATURE:
-						if (score >= 10 && i%2==0 && j%2==0) {
-							cPool.add(new FirstCreature(this, 10, i/2, j/2));
+						if (score >= 10 && i%SIZE==0 && j%SIZE==0) {
+							cPool.add(new FirstCreature(this, 10, i/SIZE, j/SIZE));
 							score -= 10;
 						}
 						break;
@@ -240,7 +241,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 					break;
 				case MouseEvent.BUTTON3:
 					Creature c;
-					while ((c = cPool.getCreatureAtMap(i/2, j/2)) != null) {
+					while ((c = cPool.getCreatureAtMap(i/SIZE, j/SIZE)) != null) {
 						score += c.getValue();
 						cPool.death(c);
 					}

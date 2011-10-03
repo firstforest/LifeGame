@@ -15,7 +15,7 @@ public class Creature {
 	// status
 	protected int life;
 	protected static int LIFE_MAX;
-	private static final int SIZE = 2;
+	private static final int SIZE = 4;
 	protected int appetite;
 	protected int mileage;
 	protected int value;

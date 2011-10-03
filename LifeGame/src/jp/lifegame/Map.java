@@ -68,6 +68,7 @@ public class Map {
 	private class MapChip {
 		private int energy;
 		private int x,y;
+		private static final int SIZE = 4;
 
 		public MapChip(int x, int y) {
 			energy = 0;
@@ -124,7 +125,7 @@ public class Map {
 			} else {
 				g.setColor(Color.WHITE);
 			}
-			g.drawRect(x*2, y*2, 2, 2);
+			g.drawRect(x*SIZE, y*SIZE, SIZE, SIZE);
 		}
 	}
 
