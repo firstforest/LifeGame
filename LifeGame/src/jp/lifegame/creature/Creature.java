@@ -91,8 +91,8 @@ public class Creature {
 			direction.x *= -1;
 		}
 
-		if (x>gameMain.getWidth()-SIZE) {
-			x = gameMain.getWidth()-SIZE;
+		if (x>gameMain.getWidth()/SIZE-SIZE) {
+			x = gameMain.getWidth()/SIZE-SIZE;
 			direction.x *= -1;
 		}
 
@@ -101,8 +101,8 @@ public class Creature {
 			direction.y *= -1;
 		}
 
-		if (y>gameMain.getHeight()-SIZE) {
-			y = gameMain.getHeight()-SIZE;
+		if (y>gameMain.getHeight()/SIZE-SIZE) {
+			y = gameMain.getHeight()/SIZE-SIZE;
 			direction.y *= -1;
 		}
 
