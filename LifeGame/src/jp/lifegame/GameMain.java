@@ -35,6 +35,8 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
     private Thread thread;
 
+    private int timer;
+    private int gameSpeed;
 	private int score;
 
 	public GameMain() {
@@ -52,13 +54,19 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
+		timer = 0;
+		gameSpeed = 3;
 		thread = new Thread(this);
 		thread.start();
 	}
 
 	public void run() {
 		while (true) {
-			gameUpdate();
+			if (timer % gameSpeed == 0) {
+				gameUpdate();
+				timer = 0;
+			}
+			timer++;
 			gameRender();
 			paintScreen();
 
@@ -169,13 +177,13 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 						cPool.add(new FirstCreature(this, 10, x, y));
 						score -= 10;
 					}
-					break; 	
+					break;
 				case GENERATOR:
 					if (score >= 1000) {
 						int x,y;
 						x = e.getX()/SIZE;
 						y = e.getY()/SIZE;
-						
+
 						sPool.add(new Generator(this, x, y));
 						score -= 1000;
 					}
@@ -278,7 +286,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝�ラ繝ｻ繧ｹ繧ｿ繝�
 
 	}
-	
+
 	public void setMouseStat (Select sel) {
 		mouseStat.select = sel;
 	}
@@ -288,7 +296,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		int x,y;
 		boolean dragged;
 		Select select;
-		
+
 		public MouseStat() {
 			dragged = false;
 			select = Select.CREATURE;

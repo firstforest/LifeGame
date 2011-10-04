@@ -15,20 +15,20 @@ public class LifeGame extends JFrame {
 		setTitle("LifeGame");
 		// resizable
 		setResizable(false);
-		
+
 		// main
 		GameMain gameMain = new GameMain();
 		Container contentPane = getContentPane();
 		contentPane.add(gameMain, BorderLayout.CENTER);
-		
+
 		// controlPanel
 		ControlPanel ctrlPane = new ControlPanel(gameMain);
-		contentPane.add(ctrlPane, BorderLayout.SOUTH);
-		
+		contentPane.add(ctrlPane, BorderLayout.EAST);
+
 		// infoPanel
 		InfoPanel infoPane = new InfoPanel(gameMain);
-		contentPane.add(infoPane, BorderLayout.EAST);
-		
+		contentPane.add(infoPane, BorderLayout.SOUTH);
+
 		gameMain.setInfoPane(infoPane);
 
 		pack();
