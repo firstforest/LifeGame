@@ -7,7 +7,7 @@ import jp.lifegame.GameMain;
 
 public class Structure {
 	protected int x,y;
-	protected static final int SIZE = 2;
+	protected static final int SIZE = 4;
 	protected Color color;
 	protected GameMain gameMain;
 
