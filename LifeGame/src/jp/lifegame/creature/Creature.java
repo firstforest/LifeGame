@@ -56,7 +56,7 @@ public class Creature {
 
 	public void draw(Graphics g) {
 		g.setColor(color);
-		g.fillRect(x*SIZE, y*SIZE, SIZE, SIZE);
+		g.fillOval(x*SIZE, y*SIZE, SIZE, SIZE);
 	}
 
 	private void selectNewDirection() {
