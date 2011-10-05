@@ -75,8 +75,8 @@ public class Map {
 
 		public MapChip(int x, int y) {
 			energy = new int[ENE_NUM];
-			for (int e : energy) {
-				e = 0;
+			for (int i=0; i<ENE_NUM; i++) {
+				energy[i] = 0;
 			}
 			this.x = x;
 			this.y = y;
