@@ -131,9 +131,9 @@ public class Map {
 			} else if (energy[0] > 0) {
 				g.setColor(new Color(255, 255, 200));
 			} else {
-				g.setColor(Color.WHITE);
+				g.setColor(new Color(200,150,150));
 			}
-			g.drawRect(x*SIZE, y*SIZE, SIZE, SIZE);
+			g.fillRect(x*SIZE, y*SIZE, SIZE, SIZE);
 		}
 	}
 

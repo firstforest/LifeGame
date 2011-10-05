@@ -35,6 +35,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 
     private Thread thread;
 
+    private long time;
     private int timer;
     private int gameSpeed;
 	private int score;
@@ -54,6 +55,7 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
+		time = System.currentTimeMillis();
 		timer = 0;
 		gameSpeed = 3;
 		thread = new Thread(this);
@@ -78,7 +80,11 @@ public class GameMain extends JPanel implements Runnable, MouseListener, MouseMo
 		}
 	}
 
-	public  int getWidth() {
+	public long getTime() {
+		return System.currentTimeMillis() - time;
+	}
+
+	public int getWidth() {
 		return WIDTH;
 	}
 
