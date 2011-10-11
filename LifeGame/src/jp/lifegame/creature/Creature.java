@@ -1,5 +1,7 @@
 package jp.lifegame.creature;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
@@ -20,6 +22,7 @@ public class Creature {
 	protected int mileage;
 	protected int value;
 	protected Color color;
+	protected AudioClip deathVoice;
 
 	protected GameMain gameMain;
 	private int timer=0;
@@ -43,6 +46,7 @@ public class Creature {
 		value = 8;
 		color = Color.GREEN;
 		direction = new Direction(1,1);
+		deathVoice = Applet.newAudioClip(getClass().getResource("tm2_can002.wav"));
 	}
 
 	public int getX() {
@@ -125,11 +129,13 @@ public class Creature {
 	}
 
 	public int death() {
+		deathVoice.play();
 		gameMain.getcPool().death(this);
 		return life;
 	}
 
 	public int getValue() {
+		deathVoice.play();
 		return value;
 	}
 
